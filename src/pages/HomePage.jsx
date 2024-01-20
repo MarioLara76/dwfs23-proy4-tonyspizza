@@ -47,7 +47,7 @@ const HomePage = () => {
                         <div className="carousel-item active" data-bs-interval="10000">
                             <img className="img-fluid rounded mx-auto d-block" src="../assets/images/pizza-2068272_1280.jpg" alt="Tonnys" />
                             <div className="carousel-caption d-none d-md-block">
-                                <h3 class="col-4 offset-8 text-end fst-italic fw-bolder">Las m&aacute;s deliciosas pizzas de la región</h3>
+                                <h3 className="col-4 offset-8 text-end fst-italic fw-bolder">Las m&aacute;s deliciosas pizzas de la región</h3>
                             </div>
                         </div>
                         <div className="carousel-item" data-bs-interval="2000">
