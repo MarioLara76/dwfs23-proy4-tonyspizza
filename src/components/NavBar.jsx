@@ -24,10 +24,10 @@ const NavBar = () => {
                 <Container fluid>
                     <Row>
                         <Col xs={12} md={6} className="justify-content-center">
-                            <Image src="./assets/images/tonnys_logo.jpg" alt="Tonny\'s Pizza Logo" roundedCircle  width={120} />
+                            <Image src="./assets/images/tonnys_logo.jpg" alt="Tonny&#39;s Pizza Logo" roundedCircle  width={120} />
                         </Col>
                     </Row>
-                    <Navbar.Brand href="#"><h3 className="fw-bolder fst-italic">Tony's Pizza</h3></Navbar.Brand>
+                    <Navbar.Brand href="#"><h3 className="fw-bolder fst-italic">Tony&#39;s Pizza</h3></Navbar.Brand>
                     <Navbar.Toggle aria-controls="offcanvasNavbar-expand"  onClick={handleShow} />
                     <Navbar.Offcanvas
                     id="offcanvasNavbar-expand"
@@ -39,7 +39,7 @@ const NavBar = () => {
                         <Offcanvas.Header closeButton>
                             <img src="./assets/images/tonnys_logo.jpg" alt="Tonny\'s Pizza Logo" width="70" height="70" className="d-inline-block align-text-top" />
                             <Offcanvas.Title>
-                                Tony's Pizza
+                                Tony&#39;s Pizza
                             </Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
