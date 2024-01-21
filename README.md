@@ -31,3 +31,35 @@ Proyecto 4 - Aplicación Web para un restaurante
     - Ejecuta en la consola: `npm i firebase`
     - Agregar configuración firebase a archivo .env
     - Crear archivo firebase.js y actualizar la configuración obtenida desde Google Firebase Console sustituyendo el valor de las variables con las variables de entorno en .env
+
+9. Recursos:
+    - React Bootstrap
+        - https://react-bootstrap.netlify.app/docs/components/navbar/
+
+    - Bootstrap
+        - https://getbootstrap.com/docs/5.0/utilities/text/#text-alignment
+
+    - Photos e images
+        - https://pxhere.com/
+
+        - https://picsum.photos/
+
+        - https://pixabay.com/photos/search/papas%20italians/
+
+    - IA Images
+        - https://www.fotor.com/images/create
+
+    - Github
+
+        - https://github.com/U-Camp/BOOT-M2-SEM16-PROY4
+
+        - https://github.com/MarioLara76/dwfs23-proy4-tonyspizza
+
+    - Firebase Console
+        - https://console.firebase.google.com/u/0/project/dwfs23-demo/overview
+
+    - Api food
+        - https://www.calorieking.com/us/es/developers/food-api/documentation/#food-ordering-and-grouping
+
+    - Api Abstract Geolocation
+        - https://app.abstractapi.com/api/email-validation/tester

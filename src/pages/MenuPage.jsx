@@ -46,18 +46,40 @@ const MenuPage = () => {
                 </div>
                 <div className="card">
                     <img src="../assets/images/molletes.jpg" className="card-img-top" alt="..." />
+                    <p className="card-text"><small className="text-muted">Se requieren mínimo 30 minutos para su entrega</small></p>
                     <div className="card-body">
-                    <h5 className="card-title fst-italic">Molletes</h5>
-                    <p className="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                        <h5 className="card-title fst-italic">Molletes</h5>
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">Mexicanos</h5>
+                                <p className="card-text">
+                                    Delicia mexicana preparados con ricos frijoles producidos en esta hermosa tierra, acompañados de queso fresco cortesía de productores locales y salsa preparada con varios tipos de chiles cuyo picor es singular. 
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="card">
-                    <img src="../assets/images/papas.jpg" className="card-img-top" alt="..." />
+                    <img src="../assets/images/papas.jpg" className="card-img-top" alt="papas" />
+                    <p className="card-text"><small className="text-muted">Se requieren mínimo 30 minutos para su entrega</small></p>
                     <div className="card-body">
-                    <h5 className="card-title fst-italic">Papas</h5>
-                    <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                        <h5 className="card-title fst-italic">Papas</h5>
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">Horneadas</h5>
+                                <p className="card-text">
+                                    Papas frescas recién horneadas, acompañadas de una salsa de tomate preparada con tomates de la región, cebolla y chiles.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">Fritas</h5>
+                                <p className="card-text">
+                                    Papas frescas fritas, acompañadas de una salsa de tomate preparada con tomates de la región, cebolla y chiles.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
