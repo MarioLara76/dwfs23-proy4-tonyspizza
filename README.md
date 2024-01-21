@@ -33,32 +33,32 @@ Proyecto 4 - Aplicación Web para un restaurante
     - Crear archivo firebase.js y actualizar la configuración obtenida desde Google Firebase Console sustituyendo el valor de las variables con las variables de entorno en .env
 
 9. Recursos:
-    - `[React Bootstrap](https://react-bootstrap.netlify.app/){:target="_blank"}`
+    - [React Bootstrap](https://react-bootstrap.netlify.app/)
 
-    - [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/){:target="_blank"}
+    - [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
 
     - Photos e images
-        - [PX here](https://pxhere.com/){:target="_blank"}
+        - [PX here](https://pxhere.com/)
 
-        - [Picsum](https://picsum.photos/){:target="_blank"}
+        - [Picsum](https://picsum.photos/)
 
-        - [Pixabay](https://pixabay.com/photos/){:target="_blank"}
+        - [Pixabay](https://pixabay.com/photos/)
 
     - IA Images
-        - [Fotor](https://www.fotor.com/images/create){:target="_blank"}
+        - [Fotor](https://www.fotor.com/images/create)
 
     - Github
 
-        - [DWFS23 Proyecto 4 - Restaurante](https://github.com/U-Camp/BOOT-M2-SEM16-PROY4){:target="_blank"}
+        - [DWFS23 Proyecto 4 - Restaurante](https://github.com/U-Camp/BOOT-M2-SEM16-PROY4)
 
-        - [Este Proyecto](https://github.com/MarioLara76/dwfs23-proy4-tonyspizza){:target="_blank"}
+        - [Este Proyecto](https://github.com/MarioLara76/dwfs23-proy4-tonyspizza)
 
     - Firebase
-        - [Firebase Console](https://console.firebase.google.com/){:target="_blank"}
-        - [Este proyecto](https://console.firebase.google.com/u/0/project/dwfs23-demo/overview){:target="_blank"}
+        - [Firebase Console](https://console.firebase.google.com/)
+        - [Este proyecto](https://console.firebase.google.com/u/0/project/dwfs23-demo/overview)
 
     - Api food
-        - [Calorie King](https://www.calorieking.com/us/es/developers/food-api/documentation/#food-ordering-and-grouping){:target="_blank"}
+        - [Calorie King](https://www.calorieking.com/us/es/developers/food-api/documentation/#food-ordering-and-grouping)
 
     - Api Abstract Geolocation
-        - [Abstract API](https://app.abstractapi.com/api/email-validation/tester){:target="_blank"}
+        - [Abstract API](https://app.abstractapi.com/api/email-validation/tester)
