@@ -1,7 +1,8 @@
-import React, {
+  import React, {
     useState,
     useEffect
   } from 'react';
+
   import {
     BrowserRouter as Router,
     Routes,
@@ -17,7 +18,8 @@ import React, {
   import HomePage from "../pages/HomePage";
   import AboutPage from "../pages/AboutPage";
   import MenuPage from '../pages/MenuPage';
-  import '../assets/css/styles.css';
+  //import '../assets/css/styles.css';
+  import Container from 'react-bootstrap/Container';
   
   const AppRouter = () => {
 
@@ -28,7 +30,9 @@ import React, {
     return (
       <Router>
         <NavBar />
-        <div className="container">
+        <Container style={{
+          marginTop: '8rem'
+        }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
@@ -37,7 +41,7 @@ import React, {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/*" element={<Navigate to="/" replace />} />
           </Routes>
-        </div>
+        </Container>
         <Footer />
       </Router>
     );
