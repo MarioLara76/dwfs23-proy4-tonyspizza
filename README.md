@@ -33,7 +33,7 @@ Proyecto 4 - Aplicación Web para un restaurante
     - Crear archivo firebase.js y actualizar la configuración obtenida desde Google Firebase Console sustituyendo el valor de las variables con las variables de entorno en .env
 
 9. Recursos:
-    - [React Bootstrap](https://react-bootstrap.netlify.app/){:target="_blank"}
+    - `[React Bootstrap](https://react-bootstrap.netlify.app/){:target="_blank"}`
 
     - [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/){:target="_blank"}
 
