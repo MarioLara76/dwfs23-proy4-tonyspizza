@@ -33,32 +33,32 @@ Proyecto 4 - Aplicación Web para un restaurante
     - Crear archivo firebase.js y actualizar la configuración obtenida desde Google Firebase Console sustituyendo el valor de las variables con las variables de entorno en .env
 
 9. Recursos:
-    - [React Bootstrap](https://react-bootstrap.netlify.app/docs/components/)
+    - [React Bootstrap](https://react-bootstrap.netlify.app/)
 
-    - Bootstrap
-        - https://getbootstrap.com/docs/5.0/utilities/text/#text-alignment
+    - [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
 
     - Photos e images
-        - https://pxhere.com/
+        - [PX here](https://pxhere.com/)
 
-        - https://picsum.photos/
+        - [Picsum](https://picsum.photos/)
 
-        - https://pixabay.com/photos/search/papas%20italians/
+        - [Pixabay](https://pixabay.com/photos/)
 
     - IA Images
-        - https://www.fotor.com/images/create
+        - [Fotor](https://www.fotor.com/images/create)
 
     - Github
 
-        - https://github.com/U-Camp/BOOT-M2-SEM16-PROY4
+        - [DWFS23 Proyecto 4 - Restaurante](https://github.com/U-Camp/BOOT-M2-SEM16-PROY4)
 
-        - https://github.com/MarioLara76/dwfs23-proy4-tonyspizza
+        - [Este Proyecto](https://github.com/MarioLara76/dwfs23-proy4-tonyspizza)
 
-    - Firebase Console
-        - https://console.firebase.google.com/u/0/project/dwfs23-demo/overview
+    - Firebase
+        - [Firebase Console](https://console.firebase.google.com/)
+        - [Este proyecto](https://console.firebase.google.com/u/0/project/dwfs23-demo/overview)
 
     - Api food
-        - https://www.calorieking.com/us/es/developers/food-api/documentation/#food-ordering-and-grouping
+        - [Calorie King](https://www.calorieking.com/us/es/developers/food-api/documentation/#food-ordering-and-grouping)
 
     - Api Abstract Geolocation
-        - https://app.abstractapi.com/api/email-validation/tester
+        - [Abstract API](https://app.abstractapi.com/api/email-validation/tester)
