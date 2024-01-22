@@ -12,15 +12,10 @@ import Form from 'react-bootstrap/Form';
 import { db } from './../firebase/firebase';
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { DashCircleFill, PlusCircleFill } from 'react-bootstrap-icons';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 const ReservacionesPage = () => {
-  /*const [mesa1, SetMesa1] = useState(3);
-  const [mesa2, SetMesa2] = useState(3);
-  const [mesa3, SetMesa3] = useState(3);
-  const [mesa4, SetMesa4] = useState(2);
-  const [mesa5, SetMesa5] = useState(1);
-  const [mesa6, SetMesa6] = useState(1);
-  */
+  const [confirmado, setConfirmado] = useState(false);
   const [reservadas, SetReservadas] = useState(0);
   const [thisListMesas, SetThisListMesas] = useState([]);
   const [reservamesas, SetReservaMesas] = useState({
@@ -31,64 +26,36 @@ const ReservacionesPage = () => {
     5: 0,
     6: 0,
   });
+  const [mesasdisponibles, SetMesasDisponibles] = useState({
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+  });
 
-
-  /*const listaMesas = async () => {
+  const getMesas = async () => {
 
     console.log(`Recuperando mesas disponibles...`);
     
     const mesasList = await getDocs(collection(db, "restaurante"));
 
-    Mesas = mesasList.docs.map((mesa) => {
-      return {
-        id: mesa.id,
-        ...mesa.data(),
-      }
-    });
-
-    console.log(Mesas);
-
-    Mesas.map((mesa) => {
-
-      if (mesa.mesa == "Dos personas") {
-
-        SetMesa1(mesa.disponibles);
-
-      }
-
-      if (mesa.mesa == "Tres personas") {
-
-        SetMesa2(mesa.disponibles);
-
-      }
-
-      if (mesa.mesa == "Cuatro personas") {
-
-        SetMesa3(mesa.disponibles);
-
-      }
-
-      if (mesa.mesa == "Seis personas") {
-          
-        SetMesa4(mesa.disponibles);
-  
-      }
-
-      if (mesa.mesa == "Ocho personas") {
-            
-        SetMesa5(mesa.disponibles);
-    
-      }
-
-      if (mesa.mesa == "Diez personas") {
-              
-        SetMesa6(mesa.disponibles);
+    const Mesas = mesasList.docs.map((mesa) => {
       
+      return {
+
+        id: mesa.id,
+
+        ...mesa.data(),
+
       }
 
     });
 
-  }*/
+    SetMesasDisponibles(Mesas);
+
+  };
 
   const listaMesas = async () => {
 
@@ -97,10 +64,15 @@ const ReservacionesPage = () => {
     const mesasList = await getDocs(collection(db, "restaurante"));
 
     const Mesas = mesasList.docs.map((mesa) => {
+
       return {
+
         id: mesa.id,
+
         ...mesa.data(),
+
       }
+
     });
 
     console.log(Mesas);
@@ -119,64 +91,101 @@ const ReservacionesPage = () => {
 
     }
 
-    SetReservadas(treservadas);
+    if(treservadas>0)
+
+      SetReservadas(treservadas);
 
   }
 
-  const assignaMesa = async (mesa,disponibles) => {
+  const assignaMesa = async (mesa,disponibles,mesaid) => {
     
     console.log(`Asignando mesa ${mesa}... ${reservamesas[mesa]}`);
 
-    if(reservamesas[mesa]<disponibles) {
+    const mesaRef = doc(db, "restaurante", mesaid);
+
+    const mesaList = await getDoc(mesaRef);
+
+    const Mesa = {
+
+      id: mesaList.id,
+
+      ...mesaList.data(),
+
+    };
+
+    if(Mesa.disponibles>0) {
 
       reservamesas[mesa] = reservamesas[mesa] + 1;
 
       //SetReservaMesas(reservamesas[mesa]);
 
+      getreservadas();
+
+      mesasdisponibles[mesa] = Mesa.disponibles - 1;
+
+      const mdisp = document.getElementById(`disponible-mesa${mesa}`);
+
+      mdisp.innerHTML = mesasdisponibles[mesa];
+
+      console.log(reservamesas);
+
+      console.log(`Mesa ${mesa} asignada`);
+
+      const mesaUpdate = await updateDoc(mesaRef, {
+
+        ocupadas: Mesa.ocupadas + 1,
+
+        disponibles: Mesa.disponibles - 1,
+
+      });
+
     }
-
-    getreservadas();
-
-    console.log(reservamesas);
-    /*const mesaRef = doc(db, "restaurante", mesa);
-
-    const mesaUpdate = await updateDoc(mesaRef, {
-
-      ocupadas: mesa.ocupadas + 1,
-
-      disponibles: mesa.total - (mesa.ocupadas + 1),
-
-    });*/
-
-    console.log(`Mesa ${mesa} asignada`);
 
   }
 
-  const removeMesa = async (mesa,disponibles) => {
+  const removeMesa = async (mesa,disponibles,mesaid) => {
         
     console.log(`Eliminando mesa ${mesa}... ${reservamesas[mesa]}, disponibles ${disponibles}`);
 
-    if(reservamesas[mesa]<=disponibles && reservadas>0) {
+    const mesaRef = doc(db, "restaurante", mesaid);
+
+    const mesaList = await getDoc(mesaRef);
+
+    const Mesa = {
+
+      id: mesaList.id,
+
+      ...mesaList.data(),
+
+    };
+
+    if(Mesa.ocupadas>0) {
 
       reservamesas[mesa] = reservamesas[mesa] - 1;
 
       //SetReservaMesas(reservamesas[mesa]);
 
+      mesasdisponibles[mesa] = Mesa.disponibles + 1;
+
+      getreservadas();
+
+      const mdisp = document.getElementById(`disponible-mesa${mesa}`);
+
+      mdisp.innerHTML = mesasdisponibles[mesa];
+
+      console.log(`Mesa ${mesa} eliminada`);
+
+      console.log(reservamesas);
+
+      const mesaUpdate = await updateDoc(mesaRef, {
+
+        ocupadas: Mesa.ocupadas - 1,
+
+        disponibles: Mesa.disponibles + 1,
+
+      });
+
     }
-      
-    getreservadas();
-
-    /*const mesaRef = doc(db, "restaurante", mesa);
-
-    const mesaUpdate = await updateDoc(mesaRef, {
-
-      ocupadas: mesa.ocupadas - 1,
-
-      disponibles: mesa.total - (mesa.ocupadas - 1),
-
-    });*/
-
-    console.log(`Mesa ${mesa} eliminada`);
 
   }
 
@@ -184,14 +193,14 @@ const ReservacionesPage = () => {
     
     listaMesas();
 
-    console.log(thisListMesas);
-
   }, []); 
+
+  const handleClick = () => setConfirmado(true);
 
   return (
     <>
       <header className="row col">
-            <h1>Reservar</h1>
+        <h1>Reservar</h1>
       </header>
       <Container fluid>
         <Row className="justify-content-md-center">
@@ -206,12 +215,12 @@ const ReservacionesPage = () => {
                       <Card.Text>
                         <Stack direction="horizontal" className="justify-content-center" gap={1}>
                           <div className="p-2 text-center">
-                            <h1>{mesa.disponibles}</h1>
+                            <h1 id={`disponible-mesa${mesa.mesa}`}>{(mesasdisponibles[mesa.mesa]>0) ? mesasdisponibles[mesa.mesa] : mesa.disponibles}</h1>
                             Disponibles
                           </div>
                           <div className="vr" />
                           <div className="p-2 justify-content-center text-center align-middle">
-                            <Button type="button" variant="outline-success" style={{ width: '3rem' }} size="md" onClick={() => assignaMesa(mesa.mesa, mesa.disponibles)} ><PlusCircleFill /></Button>
+                            <Button type="button" variant="outline-success" style={{ width: '3rem' }} size="md" onClick={() => assignaMesa(mesa.mesa, mesa.disponibles, mesa.id)} ><PlusCircleFill /></Button>
                             <Form.Control 
                               type="text"
                               size="md"
@@ -220,7 +229,7 @@ const ReservacionesPage = () => {
                               value={ (reservamesas[mesa.mesa] > 0) ? reservamesas[mesa.mesa] : 0}
                               style={{ width: '3rem' }}
                             />
-                            <Button type="button" variant="outline-secondary" style={{ width: '3rem' }} size="md" onClick={() => removeMesa(mesa.mesa,mesa.total)}><DashCircleFill /></Button>
+                            <Button type="button" variant="outline-secondary" style={{ width: '3rem' }} size="md" onClick={() => removeMesa(mesa.mesa,mesa.total,mesa.id)}><DashCircleFill /></Button>
                           </div>
                         </Stack>
                       </Card.Text>
@@ -244,36 +253,38 @@ const ReservacionesPage = () => {
                   </div>
                   <div className="vr" />
                   <div className="p-2 text-center">
-                    <Row>
-                      <Col>
-                        <Form>
-                          <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm="4">
-                              *Email:
-                            </Form.Label>
-                            <Col sm="8">
-                              <Form.Control id="txtEmail" type="email" placeholder="email@example.com" required/>
-                            </Col>
-                          </Form.Group>
-                          <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm="4">
-                              Nombre:
-                            </Form.Label>
-                            <Col sm="8">
-                              <Form.Control id="txtNombre" type="text" placeholder="Nombre Completo" />
-                            </Col>
-                          </Form.Group>
-                        </Form>
-                      </Col>
-                    </Row>
+                    <FloatingLabel  className="mb-1" controlId="floatingTextarea2" label="*Correo Electrónico">
+                      <Form.Control type="email" placeholder="cuenta@micorreo.com" />
+                    </FloatingLabel>
+                    <FloatingLabel  className="mb-1" controlId="floatingTextarea2" label="Nombre">
+                      <Form.Control type="text" placeholder="Ingrese su Nombre" />
+                    </FloatingLabel>
+                  </div>
+                  <div className="vr" />
+                  <div className="p-2 text-center">
+                    <FloatingLabel  className="mb-1" controlId="floatingTextarea2" label="Fecha">
+                      <Form.Control type="date" placeholder="Ingrese Fecha" />
+                    </FloatingLabel>
+                    <FloatingLabel  className="mb-1" controlId="floatingTextarea2" label="Hora">
+                      <Form.Control type="time" placeholder="Ingrese Hora" />
+                    </FloatingLabel>
+                  </div>
+                  <div className="vr" />
+                  <div className="p-2 text-center">
+                    <ButtonGroup className="me-2">
+                      <Button variant="outline-success" disabled={ (reservadas > 0 ) ? false : true} onClick={!confirmado ? handleClick : null} type="button" size="sm" value="">Confirmar</Button>
+                      <Button variant="outline-danger" type="button" size="sm" value="">Descartar</Button>
+                    </ButtonGroup>
                   </div>
                 </Stack>
               </Card.Text>
               <Card.Footer className="gap-2 justify-content-center text-center">
-                <ButtonGroup className="me-2">
-                  <Button variant="outline-success" type="button" size="sm" value="">Confirmar</Button>
-                  <Button variant="outline-danger" type="button" size="sm" value="">Descartar</Button>
-                </ButtonGroup>
+                <small className="text-muted">
+                  *Campos obligatorios 
+                  | Se enviará un correo de confirmación
+                  | Se enviará un correo de cancelación en caso de no asistir
+                  | <strong>Nos reservamos el derecho de admisión</strong>
+                </small>
               </Card.Footer>
             </Card.Body>
           </Card>

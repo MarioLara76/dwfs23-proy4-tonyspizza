@@ -39,7 +39,7 @@ const MenuPage = () => {
                         <div className="card">
                             <div className="card-body">
                                 <h5 className="card-title">Vegetariana</h5>
-                                <p className="card-text">La pizza vegetariana es una de las más populares en todo el mundo. Su nombre proviene de la dieta vegetariana, y es que esta pizza es originaria de este lugar.</p>
+                                <p className="card-text">La pizza vegetariana es una de las más populares en todo el mundo. Su nombre proviene de la dieta vegetariana, y es que esta pizza es cien por ciento vegetales, sin lácteos ni carnes.</p>
                             </div>
                         </div>
                     </div>
