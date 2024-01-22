@@ -32,7 +32,10 @@ Proyecto 4 - Aplicación Web para un restaurante
     - Agregar configuración firebase a archivo .env
     - Crear archivo firebase.js y actualizar la configuración obtenida desde Google Firebase Console sustituyendo el valor de las variables con las variables de entorno en .env
 
-9. Recursos:
+9. Instalar Bootstrap Icons
+    - Ejecuta en la consola: `npm install react-bootstrap-icons --save`
+
+10. Recursos:
     - [React Bootstrap](https://react-bootstrap.netlify.app/)
 
     - [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
