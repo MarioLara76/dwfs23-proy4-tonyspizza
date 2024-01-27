@@ -220,16 +220,16 @@ const ReservacionesPage = () => {
                           </div>
                           <div className="vr" />
                           <div className="p-2 justify-content-center text-center align-middle">
-                            <Button type="button" variant="outline-success" style={{ width: '3rem' }} size="md" onClick={() => assignaMesa(mesa.mesa, mesa.disponibles, mesa.id)} ><PlusCircleFill /></Button>
+                            <Button type="button" variant="outline-success" style={{ width: '3rem' }} size="md" onClick={() => assignaMesa(mesa.mesa, mesa.disponibles, mesa.id)} disabled={ mesa.disponibles>0 ? false : true }><PlusCircleFill /></Button>
                             <Form.Control 
                               type="text"
                               size="md"
                               className="text-center"
                               readOnly
-                              value={ (reservamesas[mesa.mesa] > 0) ? reservamesas[mesa.mesa] : 0}
+                              value={ (mesa.disponibles > 0) ? reservamesas[mesa.mesa] : 0}
                               style={{ width: '3rem' }}
                             />
-                            <Button type="button" variant="outline-secondary" style={{ width: '3rem' }} size="md" onClick={() => removeMesa(mesa.mesa,mesa.total,mesa.id)}><DashCircleFill /></Button>
+                            <Button type="button" variant="outline-secondary" style={{ width: '3rem' }} size="md" onClick={() => removeMesa(mesa.mesa,mesa.total,mesa.id)} disabled={ mesa.disponibles==0 }><DashCircleFill /></Button>
                           </div>
                         </Stack>
                       </Card.Text>
