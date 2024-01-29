@@ -1,4 +1,3 @@
-import React, { createElement } from 'react';
 import { useState, useEffect } from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
@@ -35,28 +34,6 @@ const ReservacionesPage = () => {
     6: 0,
   });
 
-  const getMesas = async () => {
-
-    console.log(`Recuperando mesas disponibles...`);
-    
-    const mesasList = await getDocs(collection(db, "restaurante"));
-
-    const Mesas = mesasList.docs.map((mesa) => {
-      
-      return {
-
-        id: mesa.id,
-
-        ...mesa.data(),
-
-      }
-
-    });
-
-    SetMesasDisponibles(Mesas);
-
-  };
-
   const listaMesas = async () => {
 
     console.log(`Recuperando mesas disponibles...`);
@@ -79,6 +56,12 @@ const ReservacionesPage = () => {
 
     SetThisListMesas(Mesas);
 
+    Mesas.map((mesa) => {
+
+      mesasdisponibles[mesa.mesa] = mesa.disponibles;
+  
+    });
+
   }
 
   const getreservadas = () => {
@@ -91,9 +74,7 @@ const ReservacionesPage = () => {
 
     }
 
-    if(treservadas>0)
-
-      SetReservadas(treservadas);
+    SetReservadas(treservadas);
 
   }
 
@@ -229,7 +210,7 @@ const ReservacionesPage = () => {
                               value={ (mesa.disponibles > 0) ? reservamesas[mesa.mesa] : 0}
                               style={{ width: '3rem' }}
                             />
-                            <Button type="button" variant="outline-secondary" style={{ width: '3rem' }} size="md" onClick={() => removeMesa(mesa.mesa,mesa.total,mesa.id)} disabled={ mesa.disponibles==0 }><DashCircleFill /></Button>
+                            <Button type="button" variant="outline-secondary" style={{ width: '3rem' }} size="md" onClick={() => removeMesa(mesa.mesa,mesa.total,mesa.id)} disabled={ reservamesas[mesa.mesa]==0 }><DashCircleFill /></Button>
                           </div>
                         </Stack>
                       </Card.Text>
