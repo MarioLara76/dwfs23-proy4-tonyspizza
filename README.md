@@ -35,7 +35,10 @@ Proyecto 4 - Aplicación Web para un restaurante
 9. Instalar Bootstrap Icons
     - Ejecuta en la consola: `npm install react-bootstrap-icons --save`
 
-10. Recursos:
+10. Instalar Sweet Alert 2
+    - Ejecuta en la consola: `npm i react-sweetalert2`
+
+11. Recursos:
     - [React Bootstrap](https://react-bootstrap.netlify.app/)
 
     - [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)

@@ -12,6 +12,8 @@ import { db } from './../firebase/firebase';
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { DashCircleFill, PlusCircleFill } from 'react-bootstrap-icons';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Swal from 'sweetalert2';
+//import withReactContent from 'sweetalert2-react-content';
 
 const ReservacionesPage = () => {
   const [confirmado, setConfirmado] = useState(false);
@@ -176,7 +178,43 @@ const ReservacionesPage = () => {
 
   }, []); 
 
-  const handleClick = () => setConfirmado(true);
+  const handleClick = () => {
+
+  const email = document.getElementById('txtEmail').value;
+  
+  const nombre = document.getElementById('txtNombre').value;
+  
+  const fecha = document.getElementById('txtFecha').value;
+  
+  const hora = document.getElementById('txtHora').value;
+
+  if(!email) {
+    
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Debe agregar un email electrónico!",
+      footer: '<a href="#">Why do I have this issue?</a>'
+    });
+
+    setConfirmado(false);
+
+  } if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Correo electrónico no es válido!",
+      footer: '<a href="#">Why do I have this issue?</a>'
+    });
+
+    setConfirmado(false);
+
+  }
+    
+    //setConfirmado(true);
+
+  };
 
   return (
     <>
@@ -234,20 +272,20 @@ const ReservacionesPage = () => {
                   </div>
                   <div className="vr" />
                   <div className="p-2 text-center">
-                    <FloatingLabel  className="mb-1" controlId="floatingTextarea2" label="*Correo Electrónico">
-                      <Form.Control type="email" placeholder="cuenta@micorreo.com" />
+                    <FloatingLabel  className="mb-1" label="*Correo Electrónico">
+                      <Form.Control type="email" id="txtEmail" placeholder="cuenta@micorreo.com" />
                     </FloatingLabel>
-                    <FloatingLabel  className="mb-1" controlId="floatingTextarea2" label="Nombre">
-                      <Form.Control type="text" placeholder="Ingrese su Nombre" />
+                    <FloatingLabel  className="mb-1" label="Nombre">
+                      <Form.Control type="text" id="txtNombre" placeholder="Ingrese su Nombre" />
                     </FloatingLabel>
                   </div>
                   <div className="vr" />
                   <div className="p-2 text-center">
-                    <FloatingLabel  className="mb-1" controlId="floatingTextarea2" label="Fecha">
-                      <Form.Control type="date" placeholder="Ingrese Fecha" />
+                    <FloatingLabel  className="mb-1" label="Fecha">
+                      <Form.Control type="date" id="txtFecha" placeholder="Ingrese Fecha" />
                     </FloatingLabel>
-                    <FloatingLabel  className="mb-1" controlId="floatingTextarea2" label="Hora">
-                      <Form.Control type="time" placeholder="Ingrese Hora" />
+                    <FloatingLabel  className="mb-1" label="Hora">
+                      <Form.Control type="time" id="txtHora" placeholder="Ingrese Hora" />
                     </FloatingLabel>
                   </div>
                   <div className="vr" />
