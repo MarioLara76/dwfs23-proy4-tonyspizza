@@ -37,6 +37,20 @@ Proyecto 4 - Aplicación Web para un restaurante
 
 10. Instalar Sweet Alert 2
     - Ejecuta en la consola: `npm i react-sweetalert2`
+    - Agregar al componente: `import Swal from 'sweetalert2';`
+
+11. Conversión a PWA (Progressive Web Application)
+    [Vite PWA](https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html)
+    - Instalar Vite Plugin PWA  
+        - Ejecutar en la consola: `npm install -D vite-plugin-pwa`
+        - Atienda las recomendaciones si se presenta el mensaje 2 low/high/severity severity vulnerabilities
+        - Ejecute en la consola: `npm audit fix --force`
+    - Configurar vite.config.js:
+        - Agregue `import { VitePWA } from 'vite-plugin-pwa'`
+        - En el export / plugins, agregue `VitePWA({ registerType: 'autoUpdate' })`
+        - Modo developer: `VitePWA({ registerType: 'autoUpdate', devOptions: {enabled: true} })`
+    - Para registrar automáticamente el service worker:
+        - Agregar `injectRegister: 'auto'`
 
 11. Recursos:
     - [React Bootstrap](https://react-bootstrap.netlify.app/)
