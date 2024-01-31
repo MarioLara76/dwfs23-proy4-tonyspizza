@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -8,6 +8,8 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Table from 'react-bootstrap/Table';
 import { db } from './../firebase/firebase';
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { DashCircleFill, PlusCircleFill } from 'react-bootstrap-icons';
@@ -173,9 +175,49 @@ const ReservacionesPage = () => {
 
   }
 
+  const reservaciones = async () => {
+
+    const reservacionesList = await getDocs(collection(db, "reservas"));
+
+    const Listareservacion = reservacionesList.docs.map((reservacion) => {
+
+      return {
+
+        id: reservacion.id,
+
+        ...reservacion.data(),
+
+      }
+
+    });
+
+    const listaReservaciones = document.getElementById('ListaReservaciones');
+
+    listaReservaciones.innerHTML = "";
+
+    console.info(Listareservacion);
+
+    for (const [key, value] of Object.entries(Listareservacion)) {
+
+      const item = `<tr>
+      <td>${value.nombre}</td>
+      <td style={{textalign:center}}>${value.fecha}</td>
+      <td style={{textalign:center}}>${value.hora}</td>
+      <td style={{textalign:center}}>${value.mesas[0].mesa}</td>
+      <td style={{textalign:center}}>${value.mesas[0].cantidad}</td>
+      </tr>`;
+
+      listaReservaciones.innerHTML += item;
+
+    }
+  
+  }
+
   useEffect(() => {
     
     listaMesas();
+
+    reservaciones();
 
   }, []); 
 
@@ -332,6 +374,8 @@ const ReservacionesPage = () => {
         });
   
         showMessage('confirm','success','Reservación','Reservación confirmada','Se ha enviado un correo de confirmación');
+
+
   
         setConfirmado(true);
 
@@ -434,6 +478,27 @@ const ReservacionesPage = () => {
                   | <strong>Nos reservamos el derecho de admisión</strong>
                 </small>
               </Card.Footer>
+            </Card.Body>
+          </Card>
+        </Row>
+        <hr />
+        <Row className="justify-content-md-center">
+          <Card>
+            <Card.Header className="text-center">Reservaciones</Card.Header>
+            <Card.Body>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Mesa reservada</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              <tbody id="ListaReservaciones">
+              </tbody>
+            </Table>
             </Card.Body>
           </Card>
         </Row>
