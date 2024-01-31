@@ -178,43 +178,128 @@ const ReservacionesPage = () => {
 
   }, []); 
 
-  const handleClick = () => {
+  const showMessage = (type,icon,title,text,footer) => {
 
-  const email = document.getElementById('txtEmail').value;
-  
-  const nombre = document.getElementById('txtNombre').value;
-  
-  const fecha = document.getElementById('txtFecha').value;
-  
-  const hora = document.getElementById('txtHora').value;
-
-  if(!email) {
-    
-    Swal.fire({
+    /*Swal.fire({
       icon: "error",
       title: "Oops...",
       text: "Debe agregar un email electrónico!",
       footer: '<a href="#">Why do I have this issue?</a>'
-    });
-
-    setConfirmado(false);
-
-  } if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Correo electrónico no es válido!",
-      footer: '<a href="#">Why do I have this issue?</a>'
-    });
-
-    setConfirmado(false);
+    });*/
+      
+      Swal.fire({
+        icon: icon,
+        title: title,
+        text: text,
+        footer: footer,
+        showConfirmButton: (type='confirm') ? true : false,
+        timer: 3000
+      });
 
   }
-    
-    //setConfirmado(true);
 
-  };
+  const handleClick = () => {
+
+    const email = document.getElementById('txtEmail').value;
+    
+    const nombre = document.getElementById('txtNombre').value;
+    
+    const fecha = document.getElementById('txtFecha').value;
+    
+    const hora = document.getElementById('txtHora').value;
+
+    console.log(`Email es ${email}`);
+
+    if(email === null || email === "") {
+      
+      showMessage('confirm','error','Whoops!','Correo electrónico es requerido','Ingresa una cuenta de correo electrónico válida');
+
+      setConfirmado(false);
+
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+
+      showMessage('confirm','error','Whoops!','Correo electrónico no es valido','Revisa el correo electrónico ingresado');
+
+      /*Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Correo electrónico no es válido!",
+        footer: '<a href="#">Why do I have this issue?</a>'
+      });*/
+
+      setConfirmado(false);
+
+    }
+    
+    if(nombre === null || nombre === "") {
+      
+      showMessage('confirm','error','Whoops!','Nombre es requerido','Ingresa tu nombre');
+
+      setConfirmado(false);
+
+    } else if (nombre.length < 3) {
+
+      showMessage('confirm','error','Whoops!','Nombre no es válido','Ingresa un nombre válido');
+
+      setConfirmado(false);
+
+    } else if( fecha === null || fecha === "") {
+      
+      showMessage('confirm','error','Whoops!','Fecha es requerida','Ingresa una fecha válida');
+
+      setConfirmado(false);
+
+    } else if( hora === null || hora === "") {
+      
+      showMessage('confirm','error','Whoops!','Hora es requerida','Ingresa una hora válida');
+
+      setConfirmado(false);
+
+    } else if(reservadas === 0) {
+
+      showMessage('confirm','error','Whoops!','No hay mesas reservadas','Selecciona al menos una mesa');
+
+      setConfirmado(false);
+
+    } else { 
+        
+        const reservas = [];
+  
+        for (const [key, value] of Object.entries(reservamesas)) {
+  
+          if(value>0) {
+  
+            reservas.push({ mesa: key, cantidad: value });
+  
+          }
+  
+        }
+  
+        console.log(reservas);
+  
+        const reservaRef = collection(db, "reservas");
+  
+        const newReserva = addDoc(reservaRef, {
+  
+          email: email,
+  
+          nombre: nombre,
+  
+          fecha: fecha,
+  
+          hora: hora,
+  
+          mesas: reservas,
+  
+        });
+  
+        showMessage('confirm','success','Reservación','Reservación confirmada','Se ha enviado un correo de confirmación');
+  
+        setConfirmado(true);
+  
+      }
+    
+  }
 
   return (
     <>
