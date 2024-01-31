@@ -13,6 +13,7 @@ import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from "
 import { DashCircleFill, PlusCircleFill } from 'react-bootstrap-icons';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 //import withReactContent from 'sweetalert2-react-content';
 
 const ReservacionesPage = () => {
@@ -192,10 +193,43 @@ const ReservacionesPage = () => {
         title: title,
         text: text,
         footer: footer,
-        showConfirmButton: (type='confirm') ? true : false,
-        timer: 3000
+        showConfirmButton: (type=='confirm') ? true : false,
+        timer: 1800
       });
 
+  }
+
+  const validaEmail = async (email) => {
+    
+    const apiURL = import.meta.env.VITE_ABSTRACT_EMAILVALIDATION_APIURL;
+
+    console.log(`URL is ${apiURL}`);
+
+    const apiKey = import.meta.env.VITE_ABSTRACT_EMAILVALIDATION_APIKEY;
+
+    console.log(`API KEY is ${apiKey}`);
+
+    try {
+
+        const response = await axios.get(`${apiURL}?api_key=${apiKey}&email=${email}`);
+
+        if(response.data) {
+
+          console.log(response.data);
+
+          if(response.data.deliverability !== "DELIVERABLE")
+
+            return false;
+
+          return true;
+
+        }
+
+    } catch (error) {
+
+      return error;
+
+    }
   }
 
   const handleClick = () => {
@@ -233,36 +267,40 @@ const ReservacionesPage = () => {
     
     if(nombre === null || nombre === "") {
       
-      showMessage('confirm','error','Whoops!','Nombre es requerido','Ingresa tu nombre');
+      showMessage('warning','error','Whoops!','Nombre es requerido','Ingresa tu nombre');
 
       setConfirmado(false);
 
     } else if (nombre.length < 3) {
 
-      showMessage('confirm','error','Whoops!','Nombre no es válido','Ingresa un nombre válido');
+      showMessage('warning','error','Whoops!','Nombre no es válido','Ingresa un nombre válido');
 
       setConfirmado(false);
 
     } else if( fecha === null || fecha === "") {
       
-      showMessage('confirm','error','Whoops!','Fecha es requerida','Ingresa una fecha válida');
+      showMessage('warning','error','Whoops!','Fecha es requerida','Ingresa una fecha válida');
 
       setConfirmado(false);
 
     } else if( hora === null || hora === "") {
       
-      showMessage('confirm','error','Whoops!','Hora es requerida','Ingresa una hora válida');
+      showMessage('warning','error','Whoops!','Hora es requerida','Ingresa una hora válida');
 
       setConfirmado(false);
 
     } else if(reservadas === 0) {
 
-      showMessage('confirm','error','Whoops!','No hay mesas reservadas','Selecciona al menos una mesa');
+      showMessage('warning','error','Whoops!','No hay mesas reservadas','Selecciona al menos una mesa');
 
       setConfirmado(false);
 
     } else { 
-        
+
+      validaEmail(email).then((response) => {
+
+        console.log(`Validating email... ${response}`);
+
         const reservas = [];
   
         for (const [key, value] of Object.entries(reservamesas)) {
@@ -296,8 +334,14 @@ const ReservacionesPage = () => {
         showMessage('confirm','success','Reservación','Reservación confirmada','Se ha enviado un correo de confirmación');
   
         setConfirmado(true);
+
+      }).catch((error) => {
+
+        console.log(error);
   
-      }
+      });
+
+    }
     
   }
 

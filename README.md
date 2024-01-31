@@ -51,8 +51,11 @@ Proyecto 4 - Aplicación Web para un restaurante
         - Modo developer: `VitePWA({ registerType: 'autoUpdate', devOptions: {enabled: true} })`
     - Para registrar automáticamente el service worker:
         - Agregar `injectRegister: 'auto'`
+12. Instalar axios
+    - Ejecutar en la consola: `npm install axios`
+    - Hay un detalle con sweet alert 2 (revisar por temas de seguridad informática), entonces se debe usar `npm install axios --force`
 
-11. Recursos:
+12. Recursos:
     - [React Bootstrap](https://react-bootstrap.netlify.app/)
 
     - [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
@@ -80,5 +83,5 @@ Proyecto 4 - Aplicación Web para un restaurante
     - Api food
         - [Calorie King](https://www.calorieking.com/us/es/developers/food-api/documentation/#food-ordering-and-grouping)
 
-    - Api Abstract Geolocation
+    - Api Abstract Validate Email
         - [Abstract API](https://app.abstractapi.com/api/email-validation/tester)
