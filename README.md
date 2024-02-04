@@ -55,7 +55,12 @@ Proyecto 4 - Aplicación Web para un restaurante
     - Ejecutar en la consola: `npm install axios`
     - Hay un detalle con sweet alert 2 (revisar por temas de seguridad informática), entonces se debe usar `npm install axios --force`
 
-12. Recursos:
+    Nota: 
+    - Se debe instalar `npm install --legacy-peer-deps` si hay detalles al continuar instalando otras librerías o aplicaciones
+
+    Cuando se usa Firebase Collection Where se debe asegurar enviar el valor a buscar según haya sido declarado en la collection. Por ejemplo, al usar `const mesaRef = query(collection(db, "restaurante"), where("mesa", "==", Number(mesa)));`
+
+13. Recursos:
     - [React Bootstrap](https://react-bootstrap.netlify.app/)
 
     - [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
@@ -85,3 +90,4 @@ Proyecto 4 - Aplicación Web para un restaurante
 
     - Api Abstract Validate Email
         - [Abstract API](https://app.abstractapi.com/api/email-validation/tester)
+        - En uno de los ejercicios no demostró ser 100% confiable, usé gail.com y el autocorrector lo cambió a mail.coms

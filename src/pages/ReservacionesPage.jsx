@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Table from 'react-bootstrap/Table';
 import { db } from './../firebase/firebase';
-import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, getDoc, doc, updateDoc, query, where } from "firebase/firestore";
 import { DashCircleFill, PlusCircleFill } from 'react-bootstrap-icons';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Swal from 'sweetalert2';
@@ -132,23 +132,60 @@ const ReservacionesPage = () => {
         
     console.log(`Eliminando mesa ${mesa}... ${reservamesas[mesa]}, disponibles ${disponibles}`);
 
-    const mesaRef = doc(db, "restaurante", mesaid);
+    if(mesaid>0){
 
-    const mesaList = await getDoc(mesaRef);
+      const mesaRef = doc(db, "restaurante", mesaid);
 
-    const Mesa = {
+      const mesaList = await getDoc(mesaRef);
 
-      id: mesaList.id,
+      const Mesa = {
 
-      ...mesaList.data(),
+        id: mesaList.id,
+  
+        ...mesaList.data(),
+  
+      };
 
-    };
+      console.log(`Mesa ${mesa}`);
+
+      console.log(Mesa);
+
+    } else {
+
+      console.log(typeof mesa);
+
+      console.log(`Removiendo todas las mesas, esta mesa es ${mesa}`)
+
+      const mesaRef = query(collection(db, "restaurante"), where("mesa", "==", Number(mesa)));
+
+      const mesaList = await getDocs(mesaRef);
+
+      var Mesa = null;
+
+      mesaList.forEach((doc) => {
+
+        Mesa = {
+          id: doc.id,
+          ...doc.data()
+        };
+
+      });
+
+      console.log(`Mesa ${mesa}`);
+
+      console.log(Mesa);
+
+      mesaid = Mesa.id;
+
+      console.log(`Nuevo ID: ${mesaid}`);
+
+    }
 
     if(Mesa.ocupadas>0) {
 
-      reservamesas[mesa] = reservamesas[mesa] - 1;
+      console.log(`Removiendo mesa ${mesa}, ocupadas: ${Mesa.ocupadas}, disponibles: ${Mesa.disponibles}`);
 
-      //SetReservaMesas(reservamesas[mesa]);
+      reservamesas[mesa] = reservamesas[mesa] - 1;
 
       mesasdisponibles[mesa] = Mesa.disponibles + 1;
 
@@ -162,7 +199,9 @@ const ReservacionesPage = () => {
 
       console.log(reservamesas);
 
-      const mesaUpdate = await updateDoc(mesaRef, {
+      const mesaRefUpdating = doc(db, "restaurante", mesaid);
+
+      await updateDoc(mesaRefUpdating, {
 
         ocupadas: Mesa.ocupadas - 1,
 
@@ -170,10 +209,20 @@ const ReservacionesPage = () => {
 
       });
 
+      console.log(`Mesa ${mesa} removida, ocupadas: ${Mesa.ocupadas}, disponibles: ${Mesa.disponibles}`);
+
     }
 
   }
 
+  /*
+  setTimeout(() => {
+      
+      console.log(`Reservadas ${reservadas}`);
+
+  },1000);
+  */
+  
   const reservaciones = async () => {
 
     const reservacionesList = await getDocs(collection(db, "reservas"));
@@ -192,9 +241,13 @@ const ReservacionesPage = () => {
 
     const listaReservaciones = document.getElementById('ListaReservaciones');
 
-    listaReservaciones.innerHTML = "";
+    //document.getElementsByTagName("tr")[0].remove(); // Remover las filas anteriores si existen
 
-    console.info(Listareservacion);
+    const thisTable = document.getElementById('tblReservaciones');
+
+    thisTable.getElementsByTagName("tbody")[0].innerHTML = "";
+
+    console.info(Listareservacion); //Limpiar Tabla de reservaciones
 
     for (const [key, value] of Object.entries(Listareservacion)) {
 
@@ -206,19 +259,15 @@ const ReservacionesPage = () => {
         ...getdescripcion.data()
       } 
 
-      setTimeout(() => {
+      const item = `<tr>
+      <td>${value.nombre}</td>
+      <td style={{textalign:center}}>${value.fecha}</td>
+      <td style={{textalign:center}}>${value.hora}</td>
+      <td style={{textalign:center}}>${value.mesas[0].mesa} (${thisMesa.descripcion})</td>
+      <td style={{textalign:center}}>${value.mesas[0].cantidad}</td>
+      </tr>`;
 
-        const item = `<tr>
-        <td>${value.nombre}</td>
-        <td style={{textalign:center}}>${value.fecha}</td>
-        <td style={{textalign:center}}>${value.hora}</td>
-        <td style={{textalign:center}}>${value.mesas[0].mesa} (${thisMesa.descripcion})</td>
-        <td style={{textalign:center}}>${value.mesas[0].cantidad}</td>
-        </tr>`;
-
-        listaReservaciones.innerHTML += item;
-
-      },1000);
+      listaReservaciones.innerHTML += item;
 
       console.log(thisMesa.descripcion);
 
@@ -226,11 +275,46 @@ const ReservacionesPage = () => {
   
   }
 
+  const descartar = async () => {
+
+    for (const [key, value] of Object.entries(reservamesas)) {
+
+      if( value >0 ) {
+
+        console.log(`Removing Mesa ${key} reservada ${value}`);
+
+        await removeMesa(key,0,0);
+
+      }
+
+    }
+
+  }
+
   useEffect(() => {
     
     listaMesas();
 
     reservaciones();
+
+    const hoy = document.getElementById('txtFecha');
+
+    console.log(hoy);
+
+    const ahora = document.getElementById('txtHora');
+
+    const dtnow = new Date();
+
+    //const dtDate = dtnow.toLocaleString('es-MX');
+
+    const dtTime = dtnow.toLocaleString('es-MX', {
+      hour: 'numeric',
+      minute: 'numeric',
+    });
+
+    //hoy.value = dtDate;
+
+    ahora.value = dtTime;
 
   }, []); 
 
@@ -266,7 +350,7 @@ const ReservacionesPage = () => {
 
     try {
 
-        const response = await axios.get(`${apiURL}?api_key=${apiKey}&email=${email}`);
+        const response = await axios.get(`${apiURL}?api_key=${apiKey}&email=${email}&auto_correct=false`);
 
         if(response.data) {
 
@@ -291,6 +375,8 @@ const ReservacionesPage = () => {
   const handleClick = () => {
 
     let validated = true;
+
+    let registrar = false;
 
     const email = document.getElementById('txtEmail').value;
     
@@ -371,6 +457,36 @@ const ReservacionesPage = () => {
 
     if(validated!==false) {
 
+      Swal.fire({
+
+        title: "¿Deseas confirmar la reservación?",
+
+        text: `El correo electrónico ingresado es <strong>${email}</strong> y la reservación es a nombre de ${nombre} el día ${fecha} a las ${hora}, reservando ${reservadas} mesas.`,
+
+        icon: "info",
+
+        showCancelButton: true,
+
+        confirmButtonColor: "#3085d6",
+
+        cancelButtonColor: "#d33",
+
+        confirmButtonText: "Sí, de acuerdo."
+
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+
+          registrar=true;
+
+        }
+
+      });
+
+      if(registrar!==true)
+
+        return;
+
       validaEmail(email).then((response) => {
 
         console.log(`Validating email... ${response}`);
@@ -423,7 +539,7 @@ const ReservacionesPage = () => {
   
       }).finally(() => {
 
-        console.log('Validación de correo finalizada');
+        console.log('Validación de correo finalizada y reservación confirmada');
 
       });
 
@@ -507,7 +623,7 @@ const ReservacionesPage = () => {
                   <div className="p-2 text-center">
                     <ButtonGroup className="me-2">
                       <Button variant="outline-success" disabled={ (reservadas > 0 ) ? false : true} onClick={!confirmado ? handleClick : null} type="button" size="sm" value="">Confirmar</Button>
-                      <Button variant="outline-danger" type="button" size="sm" value="">Descartar</Button>
+                      <Button variant="outline-danger" type="button" size="sm" value="" onClick={!confirmado ? descartar : null} disabled={ (reservadas > 0 ) ? ( !confirmado ? false : true) : false }>Descartar</Button>
                     </ButtonGroup>
                   </div>
                 </Stack>
@@ -528,7 +644,7 @@ const ReservacionesPage = () => {
           <Card>
             <Card.Header className="text-center">Reservaciones</Card.Header>
             <Card.Body>
-            <Table responsive striped bordered hover>
+            <Table responsive striped bordered hover id="tblReservaciones">
               <thead>
                 <tr>
                   <th>Nombre</th>
