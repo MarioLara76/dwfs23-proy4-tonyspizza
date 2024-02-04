@@ -16,7 +16,6 @@ import { DashCircleFill, PlusCircleFill } from 'react-bootstrap-icons';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-//import withReactContent from 'sweetalert2-react-content';
 
 const ReservacionesPage = () => {
   const [confirmado, setConfirmado] = useState(false);
@@ -199,15 +198,29 @@ const ReservacionesPage = () => {
 
     for (const [key, value] of Object.entries(Listareservacion)) {
 
-      const item = `<tr>
-      <td>${value.nombre}</td>
-      <td style={{textalign:center}}>${value.fecha}</td>
-      <td style={{textalign:center}}>${value.hora}</td>
-      <td style={{textalign:center}}>${value.mesas[0].mesa}</td>
-      <td style={{textalign:center}}>${value.mesas[0].cantidad}</td>
-      </tr>`;
+      const getdescripcion = await getDoc(doc(db, "restaurante", value.mesas[0].mesa));
 
-      listaReservaciones.innerHTML += item;
+      const thisMesa = {
+
+        id: getdescripcion.id,
+        ...getdescripcion.data()
+      } 
+
+      setTimeout(() => {
+
+        const item = `<tr>
+        <td>${value.nombre}</td>
+        <td style={{textalign:center}}>${value.fecha}</td>
+        <td style={{textalign:center}}>${value.hora}</td>
+        <td style={{textalign:center}}>${value.mesas[0].mesa} (${thisMesa.descripcion})</td>
+        <td style={{textalign:center}}>${value.mesas[0].cantidad}</td>
+        </tr>`;
+
+        listaReservaciones.innerHTML += item;
+
+      },1000);
+
+      console.log(thisMesa.descripcion);
 
     }
   
@@ -272,9 +285,12 @@ const ReservacionesPage = () => {
       return error;
 
     }
+    
   }
 
   const handleClick = () => {
+
+    let validated = true;
 
     const email = document.getElementById('txtEmail').value;
     
@@ -292,6 +308,8 @@ const ReservacionesPage = () => {
 
       setConfirmado(false);
 
+      validated = false;
+
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
 
       showMessage('confirm','error','Whoops!','Correo electrónico no es valido','Revisa el correo electrónico ingresado');
@@ -305,13 +323,15 @@ const ReservacionesPage = () => {
 
       setConfirmado(false);
 
-    }
-    
-    if(nombre === null || nombre === "") {
+      validated = false;
+
+    } else if(nombre === null || nombre === "") {
       
       showMessage('warning','error','Whoops!','Nombre es requerido','Ingresa tu nombre');
 
       setConfirmado(false);
+
+      validated = false;
 
     } else if (nombre.length < 3) {
 
@@ -319,11 +339,15 @@ const ReservacionesPage = () => {
 
       setConfirmado(false);
 
+      validated = false;
+
     } else if( fecha === null || fecha === "") {
       
       showMessage('warning','error','Whoops!','Fecha es requerida','Ingresa una fecha válida');
 
       setConfirmado(false);
+
+      validated = false;
 
     } else if( hora === null || hora === "") {
       
@@ -331,13 +355,21 @@ const ReservacionesPage = () => {
 
       setConfirmado(false);
 
+      validated = false;
+
     } else if(reservadas === 0) {
 
       showMessage('warning','error','Whoops!','No hay mesas reservadas','Selecciona al menos una mesa');
 
       setConfirmado(false);
 
-    } else { 
+      validated = false;
+
+    }
+
+    console.log(`Confirmado es ${confirmado}`);
+
+    if(validated!==false) {
 
       validaEmail(email).then((response) => {
 
@@ -375,14 +407,24 @@ const ReservacionesPage = () => {
   
         showMessage('confirm','success','Reservación','Reservación confirmada','Se ha enviado un correo de confirmación');
 
-
+        reservaciones();
   
         setConfirmado(true);
 
+        return;
+
       }).catch((error) => {
+
+        showMessage('confirm','error','Whoops!','Verificación de correo falló','Revisa el correo electrónico ingresado');
+
+        setConfirmado(false);
 
         console.log(error);
   
+      }).finally(() => {
+
+        console.log('Validación de correo finalizada');
+
       });
 
     }
