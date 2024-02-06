@@ -12,11 +12,11 @@ export default defineConfig({
       devOptions: {
         enabled: true
       },
-      includeAssets: ['icons/favicon.ico', 'icons/apple-touch-icon.png', 'icons/mask-icon.svg'],
+      includeAssets: ['assets/images/icons/favicon.ico', 'assets/images/icons/apple-touch-icon.png', 'assets/images/icons/mask-icon.svg'],
       manifest: {
-        name: 'My Awesome App',
-        short_name: 'MyApp',
-        description: 'My Awesome App description',
+        name: 'Restaurante Pizzería',
+        short_name: 'Proy4',
+        description: 'Desarrollo Web Full Stack 2023',
         theme_color: '#ffffff',
         icons: [
           {
