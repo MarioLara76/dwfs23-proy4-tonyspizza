@@ -128,6 +128,35 @@ const ReservacionesPage = () => {
 
   }
 
+  const getByField = async (mesa) => {
+
+    console.log(typeof mesa);
+
+    console.log(`Removiendo todas las mesas, esta mesa es ${mesa}`)
+
+    const mesaRef = query(collection(db, "restaurante"), where("mesa", "==", Number(mesa)));
+
+    const mesaList = await getDocs(mesaRef);
+
+    var Mesa = null;
+
+    mesaList.forEach((doc) => {
+
+      Mesa = {
+        id: doc.id,
+        ...doc.data()
+      };
+
+    });
+
+    console.log(`Mesa`);
+
+    console.log(Mesa);
+
+    return Mesa;
+
+  }
+
   const removeMesa = async (mesa,disponibles,mesaid) => {
         
     console.log(`Eliminando mesa ${mesa}... ${reservamesas[mesa]}, disponibles ${disponibles}`);
@@ -251,13 +280,11 @@ const ReservacionesPage = () => {
 
     for (const [key, value] of Object.entries(Listareservacion)) {
 
-      const getdescripcion = await getDoc(doc(db, "restaurante", value.mesas[0].mesa));
+      const thisMesa = await getByField(value.mesas[0].mesa);
 
-      const thisMesa = {
+      console.log(`thisMesa es`);
 
-        id: getdescripcion.id,
-        ...getdescripcion.data()
-      } 
+      console.log(thisMesa);
 
       const item = `<tr>
       <td>${value.nombre}</td>
