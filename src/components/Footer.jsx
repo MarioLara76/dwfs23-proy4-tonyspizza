@@ -11,29 +11,19 @@ const Footer = () => {
                 <use xlinkHref="#bootstrap" />
               </svg>
             </a>
-            <span className="text-muted">© 2024 Omniverse, Inc</span>
+            <span className="text-muted">Desarrollo Web Full Stack 2023</span>
           </div>
           <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
             <li className="ms-3">
               <a className="text-muted" href="#">
-                <svg className="bi" width={24} height={24}>
-                  <use xlinkHref="#twitter" />
-                </svg>
+                Proyecto académico de una aplicación web para reservaciones
               </a>
             </li>
             <li className="ms-3">
-              <a className="text-muted" href="#">
-                <svg className="bi" width={24} height={24}>
-                  <use xlinkHref="#instagram" />
-                </svg>
-              </a>
+              Mario Lara Pérez
             </li>
             <li className="ms-3">
-              <a className="text-muted" href="#">
-                <svg className="bi" width={24} height={24}>
-                  <use xlinkHref="#facebook" />
-                </svg>
-              </a>
+              Este es un proyecto de práctica, no es una aplicación comercial.
             </li>
           </ul>
         </footer>
