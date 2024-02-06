@@ -19,6 +19,7 @@ import axios from 'axios';
 
 const ReservacionesPage = () => {
   const [confirmado, setConfirmado] = useState(false);
+  const [cancelado, setCancelado] = useState(false);
   const [reservadas, SetReservadas] = useState(0);
   const [thisListMesas, SetThisListMesas] = useState([]);
   const [reservamesas, SetReservaMesas] = useState({
@@ -132,7 +133,7 @@ const ReservacionesPage = () => {
 
     console.log(typeof mesa);
 
-    console.log(`Removiendo todas las mesas, esta mesa es ${mesa}`)
+    console.log(`Buscando mesas, esta mesa es ${mesa}`)
 
     const mesaRef = query(collection(db, "restaurante"), where("mesa", "==", Number(mesa)));
 
@@ -270,8 +271,6 @@ const ReservacionesPage = () => {
 
     const listaReservaciones = document.getElementById('ListaReservaciones');
 
-    //document.getElementsByTagName("tr")[0].remove(); // Remover las filas anteriores si existen
-
     const thisTable = document.getElementById('tblReservaciones');
 
     thisTable.getElementsByTagName("tbody")[0].innerHTML = "";
@@ -304,17 +303,51 @@ const ReservacionesPage = () => {
 
   const descartar = async () => {
 
-    for (const [key, value] of Object.entries(reservamesas)) {
+    Swal.fire({
 
-      if( value >0 ) {
+      title: "¿Deseas cancelar la reservación?",
 
-        console.log(`Removing Mesa ${key} reservada ${value}`);
+      html: `<p class="text-danger">No será posible recuperar las mesas reservadas</p>`,
 
-        await removeMesa(key,0,0);
+      icon: "warning",
+
+      showCancelButton: true,
+
+      confirmButtonColor: "#1D8005",
+
+      cancelButtonColor: "#3085d6",
+
+      confirmButtonText: "Sí, cancelo.",
+
+      cancelButtonText: "No, continuaré.",
+
+      preConfirm: async () => {
+
+        console.info(`Se cancela la reservación`);
+
+        for (const [key, value] of Object.entries(reservamesas)) {
+
+          if( value>0 ) {
+
+            console.log(`Removiendo Mesa ${key} reservada ${value}`);
+
+            await removeMesa(key,0,0);
+
+          }
+
+        }
 
       }
 
-    }
+    }).then((result) => {
+
+      console.log(`Result es ${result.isConfirmed}`)
+
+      if (result.isConfirmed)
+
+        console.log(`Cancelación confirmada`);
+
+    });
 
   }
 
@@ -402,8 +435,6 @@ const ReservacionesPage = () => {
   const handleClick = () => {
 
     let validated = true;
-
-    let registrar = false;
 
     const email = document.getElementById('txtEmail').value;
     
@@ -498,78 +529,78 @@ const ReservacionesPage = () => {
 
         cancelButtonColor: "#3085d6",
 
-        confirmButtonText: "Sí, de acuerdo."
+        confirmButtonText: "Sí, de acuerdo.",
+
+        cancelButtonText: "Aún no",
+
+        preConfirm: async () => {
+
+          validaEmail(email).then((response) => {
+
+            console.log(`Validating email... ${response}`);
+    
+            const reservas = [];
+      
+            for (const [key, value] of Object.entries(reservamesas)) {
+      
+              if(value>0) {
+      
+                reservas.push({ mesa: key, cantidad: value });
+      
+              }
+      
+            }
+      
+            console.log(reservas);
+      
+            const reservaRef = collection(db, "reservas");
+      
+            const newReserva = addDoc(reservaRef, {
+      
+              email: email,
+      
+              nombre: nombre,
+      
+              fecha: fecha,
+      
+              hora: hora,
+      
+              mesas: reservas,
+      
+            });
+      
+            setConfirmado(true);
+
+            showMessage('confirm','success','Reservación','Reservación confirmada','Se ha enviado un correo de confirmación');
+    
+          }).catch((error) => {
+    
+            showMessage('confirm','error','Whoops!','Verificación de correo falló','Revisa el correo electrónico ingresado');
+    
+            setConfirmado(false);
+    
+            console.log(error);
+      
+          }).finally(() => {
+    
+            console.log('Validación de correo finalizada y reservación confirmada');
+    
+          });
+        
+        }
 
       }).then((result) => {
 
         if (result.isConfirmed) {
 
-          registrar=true;
+          reservaciones();
+
+          console.log(`Registro exitoso`);
 
         }
 
       });
-
-      if(registrar!==true)
-
-        return;
-
-      validaEmail(email).then((response) => {
-
-        console.log(`Validating email... ${response}`);
-
-        const reservas = [];
-  
-        for (const [key, value] of Object.entries(reservamesas)) {
-  
-          if(value>0) {
-  
-            reservas.push({ mesa: key, cantidad: value });
-  
-          }
-  
-        }
-  
-        console.log(reservas);
-  
-        const reservaRef = collection(db, "reservas");
-  
-        const newReserva = addDoc(reservaRef, {
-  
-          email: email,
-  
-          nombre: nombre,
-  
-          fecha: fecha,
-  
-          hora: hora,
-  
-          mesas: reservas,
-  
-        });
-  
-        showMessage('confirm','success','Reservación','Reservación confirmada','Se ha enviado un correo de confirmación');
-
-        reservaciones();
-  
-        setConfirmado(true);
-
-        return;
-
-      }).catch((error) => {
-
-        showMessage('confirm','error','Whoops!','Verificación de correo falló','Revisa el correo electrónico ingresado');
-
-        setConfirmado(false);
-
-        console.log(error);
-  
-      }).finally(() => {
-
-        console.log('Validación de correo finalizada y reservación confirmada');
-
-      });
-
+      
     }
     
   }
