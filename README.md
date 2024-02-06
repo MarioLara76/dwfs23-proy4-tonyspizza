@@ -59,7 +59,7 @@ Proyecto 4 - Aplicación Web para un restaurante
     - Se debe instalar `npm install --legacy-peer-deps` si hay detalles al continuar instalando otras librerías o aplicaciones
     - Para corregir el problema de --legacy-peer-deps:
         - Agregue en Netlify una variable de entorno similar a esta:
-        key: NPM_FLAGS, value: --legacy-peer-deps (https://answers.netlify.com/t/site-deploy-fail/46531/3)
+            - key: NPM_FLAGS, value: --legacy-peer-deps (https://answers.netlify.com/t/site-deploy-fail/46531/3)
 
     Cuando se usa Firebase Collection Where se debe asegurar enviar el valor a buscar según haya sido declarado en la collection. Por ejemplo, al usar `const mesaRef = query(collection(db, "restaurante"), where("mesa", "==", Number(mesa)));`
 
