@@ -90,4 +90,8 @@ Proyecto 4 - Aplicación Web para un restaurante
 
     - Api Abstract Validate Email
         - [Abstract API](https://app.abstractapi.com/api/email-validation/tester)
-        - En uno de los ejercicios no demostró ser 100% confiable, usé gail.com y el autocorrector lo cambió a mail.coms
+        - En uno de los ejercicios no demostró ser 100% confiable, usé gail.com y el autocorrector lo cambió a mail.com
+    
+    - React Query Firebase (solo para practicar más adelante)
+        - `npm i --save react react-query firebase`
+        - `npm i --save @react-query-firebase/firestore`

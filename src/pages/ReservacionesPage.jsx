@@ -461,15 +461,15 @@ const ReservacionesPage = () => {
 
         title: "¿Deseas confirmar la reservación?",
 
-        text: `El correo electrónico ingresado es <strong>${email}</strong> y la reservación es a nombre de ${nombre} el día ${fecha} a las ${hora}, reservando ${reservadas} mesas.`,
+        html: `<p>El correo electrónico ingresado es <strong>${email}</strong></p><p>La reservación es a nombre de <i>${nombre}</i> <br>el día <b>${fecha} a las ${hora}</b>,<br> reservando ${reservadas} mesa${(reservadas>1)?'s':''}.</p>`,
 
-        icon: "info",
+        icon: "question",
 
         showCancelButton: true,
 
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#1D8005",
 
-        cancelButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
 
         confirmButtonText: "Sí, de acuerdo."
 

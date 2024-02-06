@@ -12,7 +12,7 @@ export default defineConfig({
       devOptions: {
         enabled: true
       },
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      includeAssets: ['icons/favicon.ico', 'icons/apple-touch-icon.png', 'icons/mask-icon.svg'],
       manifest: {
         name: 'My Awesome App',
         short_name: 'MyApp',
